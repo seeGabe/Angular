@@ -1,0 +1,28 @@
+<div class="container col-xs-4">
+<p>Leave a Note in the Indexed DB.</p>
+	<form name="form">
+		<label>Name:</label><input type="text" ng-model="note.name" class="form-control"/><br />
+		<label>Message:</label><input type="text" ng-model="note.body" class="form-control"/><br />
+		<label>Key:</label><input type="number" min="1" ng-model="key" class="form-control"/><br />
+		<button class="btn btn-primary" ng-click="saveNote();" ng-disabled="">Create new</button>
+		<button class="btn btn-success" ng-click="saveNote();" ng-disabled="isUnchanged(note)">Update this key</button>
+		<button type ="submit" class="btn btn-info" ng-click="makeMaster(note);">Make</button><br />
+	</form>
+	<pre>{{note | json}}</pre>
+	<pre>{{masterNote | json}}</pre>
+	<hr />
+	<button class="btn btn-info" ng-click="getOne(key);">Retrieve one</button>
+	<button class="btn btn-danger" ng-click="delNote(key);">Delete this one</button>
+	<button type="button" class="btn btn-default btn-lg" ng-click="sync();">
+  		<span class="glyphicon glyphicon-refresh"></span> reload
+	</button>
+	<pre>Name: {{note.name}}</pre>
+	<pre>Note: {{note.body}}</pre>
+	<hr />
+	<ol class="list-group">
+		<li class="list-group-item" ng-repeat="note in notes">
+			{{note.name}}
+			<p>{{note.body}}</p>
+		</li>
+	</ol>
+</div>

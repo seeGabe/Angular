@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>WATCHERSSSSSSSS</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+	</head>
+	<body>
+		<div class="container" ng-controller="aCtrl">
+			<select ng-model="countSelection" ng-options="n for n in [5,10,15,20]"></select>
+			
+			<h2>{{people[0].fname}}</h2>
+			<p>{{changed}}</p>
+			<div class="input-group input-group-lg" ng-repeat="person in people">
+				<span class="input-group-addon">&gt;</span>
+				<input class="form-control" type="text" ng-model="person.fname">
+			</div>
+		</div>
+	
+		<script src="../lib/angular.min.js"></script>
+		<script>
+			angular.module('myApp',[]).
+			controller('aCtrl',['$scope','$http',function($scope,$http){
+				$scope.getPeople = function(count){
+					$http.jsonp('http://www.filltext.com/?rows='+count+'&fname={firstName}&callback=JSON_CALLBACK').success(function(data){
+						$scope.people = data;
+					})
+				}
+				
+				$scope.countSelection = 10;
+				
+				$scope.$watch('countSelection', function(newVal,oldVal){
+					$scope.getPeople(newVal);
+				});
+				
+				$scope.$watch('people', function(n,o){
+					if(n!=o){
+						$scope.changed = Date().toString();
+					}
+				},true);
+			}])
+		</script>
+	</body>
+</html>
