@@ -3,7 +3,7 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>WATCHERSSSSSSSS</title>
-		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 	</head>
 	<body>
 		<div class="container" ng-controller="aCtrl">
@@ -17,13 +17,14 @@
 			</div>
 		</div>
 	
-		<script src="../lib/angular.min.js"></script>
+		<script src="lib/angular.min.js"></script>
 		<script>
 			angular.module('myApp',[]).
 			controller('aCtrl',['$scope','$http',function($scope,$http){
 				$scope.getPeople = function(count){
-					$http.jsonp('http://www.filltext.com/?rows='+count+'&fname={firstName}&callback=JSON_CALLBACK').success(function(data){
+					$http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&callback=JSON_CALLBACK').success(function(data){
 						$scope.people = data;
+						console.log(data);
 					})
 				}
 				
