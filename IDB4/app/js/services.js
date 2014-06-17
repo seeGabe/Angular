@@ -53,7 +53,7 @@ myAppServices.factory('bundleServices',['$q',function($q){
 		return deferred.promise;
 	}
 	
-	function saveNote(masterNote){
+	function saveNote(note){
 		//Should this call init() too? maybe
 		var deferred = $q.defer();
 		// check if this is an existing record
