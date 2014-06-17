@@ -58,8 +58,4 @@ myAppControllers.controller('MyCtrl1', ['$scope','bundleServices',function($scop
 		return angular.equals(note, $scope.master);
 	};
 
-  }])
-  
-  .controller('MyCtrl2', [function() {
-
   }]);
