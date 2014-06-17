@@ -2,12 +2,7 @@
 
 /* Services */
 
-
-// Demonstrate how to register services
-// In this case it is a simple value service.
 var myAppServices = angular.module('myAppServices', []);
-
-myAppServices.value('version', '0.1');
 
 myAppServices.factory('bundleServices',['$q',function($q){
 
