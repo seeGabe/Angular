@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" id="myApp" ng-app="demographicDataApp" lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Random Test Data</title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    </head>
+    <body>
+        <div class="container" ng-controller="aController as vm">
+            <div class="row">
+                <div class="col-sm-6">
+                    <select ng-model="vm.primarySelection" ng-options="n for n in [1,2,3,4,5]">primary</select>
+                    <label>Members generated</label>
+                </div>
+                <div class="col-sm-6">
+                    <select ng-model="vm.supplementalSelection" ng-options="j for j in [3,6,9,12,15]">supplemental</select>
+                    <label>More names</label>
+                </div>
+            </div>
+
+            <h2>Primary Members</h2>
+            <table class="table">
+                <thead>
+                    <tr> 
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Address</th>
+                        <th>ZIP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="person in vm.people">
+                        <td>{{person.lname}}</td>
+                        <td>{{person.fname}}</td>
+                        <td>{{person.address.streetAddress}}</td>
+                        <td>{{person.address.zip}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>More Names</h2>
+            <table class="table">
+                <tbody>
+                    <tr ng-repeat="name in vm.names">
+                        <td>{{name.fname}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <hr>
+
+            <input type="checkbox" ng-model="vm.bar" ng-change="vm.foo()">
+            <label>Toggle Me</label>
+        </div>
+
+    <script src="lib/angular.min.js"></script>
+    <script>
+        angular.module('demographicDataApp',[]).
+        controller('aController',['$scope','$http',function($scope,$http){
+            // TODO: maybe leverage the http://www.zipcodeapi.com/ API
+            var vm = this;
+            vm.primarySelection = 3;
+            vm.supplementalSelection = 6;
+
+            vm.foo = function(){
+                /**
+                * called by changes to the input="checkbox"
+                */
+                console.log('change checkbox value');
+                getMembers(vm.primarySelection);
+                getNames(vm.supplementalSelection);
+            };
+
+
+            var getMembers = function(count){
+                /**
+                * retrieves random demographic data from API
+                * @param {number} count The value from primary select box
+                */
+                $http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&lname={lastName}&address={addressObject}&callback=JSON_CALLBACK').success(function(data){
+                    vm.people = data;
+                    console.log('Primaries'+ JSON.stringify(data));
+                });
+            };
+            var getNames = function(count){
+                /**
+                * retrieves random first names from API
+                * @param {number} count The value from supplemental select box
+                */
+                $http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&callback=JSON_CALLBACK').success(function(data){
+                    vm.names = data;
+                    console.log('more names'+ JSON.stringify(data));
+                });
+            };
+
+        }]);
+    </script>
+  </body>
+</html>
