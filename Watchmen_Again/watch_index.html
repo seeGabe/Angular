@@ -1,0 +1,116 @@
+<!doctype html>
+<html ng-app="DummyDataApp">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Random Test Data</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <script src="lib/angular.min.js"></script>
+    <script>
+      var app = angular.module('DummyDataApp', []);
+      app.factory('ShareFactory',ShareFactory);
+      app.factory('DataService', DataService);
+      app.controller('FirstController', FirstController);
+      // TODO: maybe leverage the http://www.zipcodeapi.com/ API
+      function ShareFactory(){
+        return {
+          inputfilter:{
+            primary:3,
+            supplemental:6
+          },
+          dummydata:{
+            members:{},
+            names:{}
+          }
+        };        
+      }
+
+      function DataService($http, ShareFactory){
+        var getMembers = function(count){
+          /**
+          * retrieves random demographic data from API
+          * @param {number} count The value from primary select box
+          */
+          $http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&lname={lastName}&address={addressObject}&callback=JSON_CALLBACK').success(function(data){
+            console.log('Primaries'+ JSON.stringify(data));
+            ShareFactory.dummydata.members=data;
+          });
+        };
+
+        var getNames = function(count){
+          /**
+          * retrieves random first names from API
+          * @param {number} count The value from supplemental select box
+          */
+          $http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&callback=JSON_CALLBACK').success(function(data){
+            ShareFactory.dummydata.names=data;
+              console.log('more names'+ JSON.stringify(data));
+          });
+        };
+
+        return{
+          getMembers:getMembers,
+          getNames:getNames
+        }
+      }
+
+      function FirstController($scope, ShareFactory, DataService) {
+
+        this.inputfilter = ShareFactory.inputfilter;
+        this.dummydata = ShareFactory.dummydata;
+
+        $scope.$watch('vm.inputfilter',
+          function(newvalue,oldvalue){
+            this.inputfilter = newvalue;
+            console.log('CHANGE DETECTED -- current values are: '+ JSON.stringify(this.inputfilter));
+            DataService.getMembers(ShareFactory.inputfilter.primary);
+            DataService.getNames(ShareFactory.inputfilter.supplemental);
+        },true);
+
+      }
+
+    </script>
+  </head>
+
+  <body>
+    <div class="container" ng-view>
+      <div ng-controller="FirstController as vm">
+        <div class="row">
+          <div class="col-sm-6">
+            <select ng-model="vm.inputfilter.primary" ng-options="n for n in [1,2,3,4,5]">primary</select>
+            <label>Members generated</label>
+          </div>
+          <div class="col-sm-6">
+            <select ng-model="vm.inputfilter.supplemental" ng-options="n for n in [3,6,9,12,15]">supplemental</select>
+            <label>More names</label>
+          </div>
+        </div
+      </div>
+
+      <div class="row">
+        <h2>Primary Members</h2>
+        <table class="table">
+          <thead>
+            <tr><th>Last Name</th><th>First Name</th><th>Address</th><th>ZIP</th></tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="person in vm.dummydata.members">
+              <td>{{person.lname}}</td>
+              <td>{{person.fname}}</td>
+              <td>{{person.address.streetAddress}}</td>
+              <td>{{person.address.zip}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>More Names</h2>
+        <table class="table">
+          <tbody>
+            <tr ng-repeat="name in vm.dummydata.names">
+              <td>{{name.fname}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
