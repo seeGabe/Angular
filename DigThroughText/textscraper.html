@@ -8,11 +8,11 @@
     <script>
       var app = angular.module("DigThroughText",[]);
       app.controller('outputController', outputController);
+      app.factory('Wholedeal',Wholedeal);
+      app.factory('DataService', DataService);
 
-      function outputController($scope){
-        var text = 'BrowserName: Mobile Safari BrowserVersion: 9.0 OSName: iOS OSVersion: 9.0.1 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1 BrowserName: Mobile Safari BrowserVersion: 9.0 OSName: iOS OSVersion: 9.0.1 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1 BrowserName: Mobile Safari BrowserVersion: 8.0 OSName: iOS OSVersion: 8.4 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H143 Safari/600.1.4 BrowserName: Mobile Safari BrowserVersion: 9.0 OSName: iOS OSVersion: 9.0.1 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1 BrowserName: Mobile Safari BrowserVersion: 7.0 OSName: iOS OSVersion: 7.0.2 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 7_0_2 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A501 Safari/9537.53 BrowserName: Mobile Safari BrowserVersion: 9.0 OSName: iOS OSVersion: 9.0.1 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1';
-
-        $scope.wholedeal = {
+      function Wholedeal() {
+        return {
           pointers : {
             browsernamesearchstart : [],
             browserversionsearchstart : [],
@@ -37,7 +37,17 @@
             useragentstring : ''
             */
           }
-        }; 
+        }
+      };
+
+      function DataService() {
+        var text = 'BrowserName: Mobile Safari BrowserVersion: 9.0 OSName: iOS OSVersion: 9.0.1 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1 BrowserName: Mobile Safari BrowserVersion: 9.0 OSName: iOS OSVersion: 9.0.1 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1 BrowserName: Mobile Safari BrowserVersion: 8.0 OSName: iOS OSVersion: 8.4 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H143 Safari/600.1.4 BrowserName: Mobile Safari BrowserVersion: 9.0 OSName: iOS OSVersion: 9.0.1 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1 BrowserName: Mobile Safari BrowserVersion: 7.0 OSName: iOS OSVersion: 7.0.2 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 7_0_2 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A501 Safari/9537.53 BrowserName: Mobile Safari BrowserVersion: 9.0 OSName: iOS OSVersion: 9.0.1 ScreenResolution: 768x1024 UserAgentString: Mozilla/5.0 (iPad CPU OS 9_0_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A404 Safari/601.1';
+        return {
+          text:text
+        }
+      };
+
+      function outputController(Wholedeal, DataService){
 
         var browsernamepat = /browsername/gi;
         var browserversionpat = /browserversion/gi;
@@ -46,56 +56,56 @@
         var screenresolutionpat = /screenresolution/gi;
         var useragentstringpat = /useragentstring/gi;
 
-        while (browsernamepat.test(text)==true) {
-          $scope.wholedeal.pointers.browsernamesearchstart.push(browsernamepat.lastIndex-11);
-          $scope.wholedeal.pointers.browsernamesearchend.push(browsernamepat.lastIndex+2);
+        this.datapart = Wholedeal.data;
+
+        while (browsernamepat.test(DataService.text)==true) {
+          Wholedeal.pointers.browsernamesearchstart.push(browsernamepat.lastIndex-11);
+          Wholedeal.pointers.browsernamesearchend.push(browsernamepat.lastIndex+2);
         }
-        while (browserversionpat.test(text)==true) {
-          $scope.wholedeal.pointers.browserversionsearchstart.push(browserversionpat.lastIndex-14);
-          $scope.wholedeal.pointers.browserversionsearchend.push(browserversionpat.lastIndex+2);
+        while (browserversionpat.test(DataService.text)==true) {
+          Wholedeal.pointers.browserversionsearchstart.push(browserversionpat.lastIndex-14);
+          Wholedeal.pointers.browserversionsearchend.push(browserversionpat.lastIndex+2);
         }
-        while (osnamepat.test(text)==true) {
-          $scope.wholedeal.pointers.osnamesearchstart.push(osnamepat.lastIndex-6);
-          $scope.wholedeal.pointers.osnamesearchend.push(osnamepat.lastIndex+2);
+        while (osnamepat.test(DataService.text)==true) {
+          Wholedeal.pointers.osnamesearchstart.push(osnamepat.lastIndex-6);
+          Wholedeal.pointers.osnamesearchend.push(osnamepat.lastIndex+2);
         }
-        while (osversionpat.test(text)==true) {
-          $scope.wholedeal.pointers.osversionsearchstart.push(osversionpat.lastIndex-9);
-          $scope.wholedeal.pointers.osversionsearchend.push(osversionpat.lastIndex+2);
+        while (osversionpat.test(DataService.text)==true) {
+          Wholedeal.pointers.osversionsearchstart.push(osversionpat.lastIndex-9);
+          Wholedeal.pointers.osversionsearchend.push(osversionpat.lastIndex+2);
         }
-        while (screenresolutionpat.test(text)==true) {
-          $scope.wholedeal.pointers.screenresolutionsearchstart.push(screenresolutionpat.lastIndex-16);
-          $scope.wholedeal.pointers.screenresolutionsearchend.push(screenresolutionpat.lastIndex+2);
+        while (screenresolutionpat.test(DataService.text)==true) {
+          Wholedeal.pointers.screenresolutionsearchstart.push(screenresolutionpat.lastIndex-16);
+          Wholedeal.pointers.screenresolutionsearchend.push(screenresolutionpat.lastIndex+2);
         }
-        while (useragentstringpat.test(text)==true) {
-          $scope.wholedeal.pointers.useragentstringsearchstart.push(useragentstringpat.lastIndex-15);
-          $scope.wholedeal.pointers.useragentstringsearchend.push(useragentstringpat.lastIndex+2);
+        while (useragentstringpat.test(DataService.text)==true) {
+          Wholedeal.pointers.useragentstringsearchstart.push(useragentstringpat.lastIndex-15);
+          Wholedeal.pointers.useragentstringsearchend.push(useragentstringpat.lastIndex+2);
         }
 
         // Loop controls
-        var loopCount = $scope.wholedeal.pointers.browsernamesearchstart.length
+        var loopCount = Wholedeal.pointers.browsernamesearchstart.length
         var i = 0;
         var j = 1;
 
         while (i<loopCount) {
-          $scope.wholedeal.data[i] = {};
-          $scope.wholedeal.data[i].browsername = text.substring($scope.wholedeal.pointers.browsernamesearchend[i],$scope.wholedeal.pointers.browserversionsearchstart[i]);
-          $scope.wholedeal.data[i].browserversion = text.substring($scope.wholedeal.pointers.browserversionsearchend[i],$scope.wholedeal.pointers.osnamesearchstart[i]);
-          $scope.wholedeal.data[i].osname = text.substring($scope.wholedeal.pointers.osnamesearchend[i],$scope.wholedeal.pointers.osversionsearchstart[i]);
-          $scope.wholedeal.data[i].osversion = text.substring($scope.wholedeal.pointers.osversionsearchend[i],$scope.wholedeal.pointers.screenresolutionsearchstart[i]);
-          $scope.wholedeal.data[i].screenresolution = text.substring($scope.wholedeal.pointers.screenresolutionsearchend[i],$scope.wholedeal.pointers.useragentstringsearchstart[i]);
-          $scope.wholedeal.data[i].useragentstring = text.substring($scope.wholedeal.pointers.useragentstringsearchend[i],$scope.wholedeal.pointers.browsernamesearchstart[j]);
+          Wholedeal.data[i] = {};
+          Wholedeal.data[i].browsername = DataService.text.substring(Wholedeal.pointers.browsernamesearchend[i],Wholedeal.pointers.browserversionsearchstart[i]);
+          Wholedeal.data[i].browserversion = DataService.text.substring(Wholedeal.pointers.browserversionsearchend[i],Wholedeal.pointers.osnamesearchstart[i]);
+          Wholedeal.data[i].osname = DataService.text.substring(Wholedeal.pointers.osnamesearchend[i],Wholedeal.pointers.osversionsearchstart[i]);
+          Wholedeal.data[i].osversion = DataService.text.substring(Wholedeal.pointers.osversionsearchend[i],Wholedeal.pointers.screenresolutionsearchstart[i]);
+          Wholedeal.data[i].screenresolution = DataService.text.substring(Wholedeal.pointers.screenresolutionsearchend[i],Wholedeal.pointers.useragentstringsearchstart[i]);
+          Wholedeal.data[i].useragentstring = DataService.text.substring(Wholedeal.pointers.useragentstringsearchend[i],Wholedeal.pointers.browsernamesearchstart[j]);
           i++;
           j++;
         }
-
-console.log($scope.wholedeal);
-
+        console.log(Wholedeal);
       };
     </script>
   </head>
   <body>
     <div class="container" ng-view>
-      <div class="row" ng-controller="outputController" >
+      <div class="row" ng-controller="outputController as oc" >
         <table>
           <tr>
             <th>Browser Name</th>
@@ -105,7 +115,7 @@ console.log($scope.wholedeal);
             <th>Screen Res</th>
             <th>User Agent</th>
           </tr>
-          <tr ng-repeat="item in wholedeal.data">
+          <tr ng-repeat="item in oc.datapart">
             <td>{{item.browsername}}</td>
             <td>{{item.browserversion}}</td>
             <td>{{item.osname}}</td>
