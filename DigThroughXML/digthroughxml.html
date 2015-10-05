@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="DigThroughXML">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dig Through XML</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <script src="lib/angular.min.js"></script>
+    <script>
+      var app = angular.module("DigThroughXML",[]);
+      app.controller('outputController', outputController);
+
+      function loadXMLDoc(filename){
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", filename, false);
+        xhr.send();
+        return xhr.responseXML;
+      };
+
+      function outputController($scope){
+        var data = {
+         // email : nums[ID1,ID2,...]
+        };
+        var i=0;
+        var j=0;
+        var xmlDoc = loadXMLDoc('test.xml');
+        var memberCounter =xmlDoc.querySelectorAll("getLinkedMembersDetails").length ;
+        var infoCounter = 0;
+
+        $scope.out = data;
+
+        for(i; i<memberCounter;i++){
+
+          data[xmlDoc.getElementsByTagName("getLinkedMembersDetails")[i].getElementsByTagName('email')[0].childNodes[0].nodeValue] = 
+          [];
+          
+          infoCounter = xmlDoc.getElementsByTagName("getLinkedMembersDetails")[i].getElementsByTagName("memberInfoResponse").length + infoCounter;
+
+          for(j; j <infoCounter;j++){
+
+            data[xmlDoc.getElementsByTagName("getLinkedMembersDetails")[i].getElementsByTagName('email')[0].childNodes[0].nodeValue]
+            .push(
+              xmlDoc.getElementsByTagName("memberInfoResponse")[j].attributes[0].nodeValue
+              +' - '+ 
+              xmlDoc.getElementsByTagName("memberInfoResponse")[j].getElementsByTagName('memberId')[0].childNodes[0].nodeValue);
+
+          };
+        };
+      };
+    </script>
+  </head>
+  <body>
+    <div class="container" ng-view>
+      <div class="row" ng-controller="outputController" >
+        <h2>Login Accounts and Business Identifiers</h2>
+        <div class="row" ng-repeat="(email,nums) in out">
+          <h4>{{email}}</h4>
+          <p><i>{{nums}}</i></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
