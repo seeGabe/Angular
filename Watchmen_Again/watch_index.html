@@ -3,8 +3,10 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Random Test Data</title>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-    <script src="lib/angular.min.js"></script>
+    <!-- You need to be running this on a localhost / server
+        so that you can make the $http (XHR) calls and hit CDNs -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.29/angular.min.js"></script>
     <script>
       var app = angular.module('DummyDataApp', []);
       app.factory('ShareFactory',ShareFactory);

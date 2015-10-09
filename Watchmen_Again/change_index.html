@@ -1,9 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:ng="http://angularjs.org" id="myApp" ng-app="demographicDataApp" lang="en">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Random Test Data</title>
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Random Test Data</title>
+    <!-- You need to be running this on a localhost / server
+        so that you can make the $http (XHR) calls and hit CDNs -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.29/angular.min.js"></script>
+    <script>
+        angular.module('demographicDataApp',[]).
+        controller('aController',['$scope','$http',function($scope,$http){
+            // TODO: maybe leverage the http://www.zipcodeapi.com/ API
+            var vm = this;
+            vm.primarySelection = 3;
+            vm.supplementalSelection = 6;
+
+            vm.foo = function(){
+                /**
+                * called by changes to the input="checkbox"
+                */
+                console.log('change checkbox value');
+                getMembers(vm.primarySelection);
+                getNames(vm.supplementalSelection);
+            };
+
+
+            var getMembers = function(count){
+                /**
+                * retrieves random demographic data from API
+                * @param {number} count The value from primary select box
+                */
+                $http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&lname={lastName}&address={addressObject}&callback=JSON_CALLBACK').success(function(data){
+                    vm.people = data;
+                    console.log('Primaries'+ JSON.stringify(data));
+                });
+            };
+            var getNames = function(count){
+                /**
+                * retrieves random first names from API
+                * @param {number} count The value from supplemental select box
+                */
+                $http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&callback=JSON_CALLBACK').success(function(data){
+                    vm.names = data;
+                    console.log('more names'+ JSON.stringify(data));
+                });
+            };
+
+        }]);
+    </script>
     </head>
     <body>
         <div class="container" ng-controller="aController as vm">
@@ -52,48 +96,5 @@
             <input type="checkbox" ng-model="vm.bar" ng-change="vm.foo()">
             <label>Toggle Me</label>
         </div>
-
-    <script src="lib/angular.min.js"></script>
-    <script>
-        angular.module('demographicDataApp',[]).
-        controller('aController',['$scope','$http',function($scope,$http){
-            // TODO: maybe leverage the http://www.zipcodeapi.com/ API
-            var vm = this;
-            vm.primarySelection = 3;
-            vm.supplementalSelection = 6;
-
-            vm.foo = function(){
-                /**
-                * called by changes to the input="checkbox"
-                */
-                console.log('change checkbox value');
-                getMembers(vm.primarySelection);
-                getNames(vm.supplementalSelection);
-            };
-
-
-            var getMembers = function(count){
-                /**
-                * retrieves random demographic data from API
-                * @param {number} count The value from primary select box
-                */
-                $http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&lname={lastName}&address={addressObject}&callback=JSON_CALLBACK').success(function(data){
-                    vm.people = data;
-                    console.log('Primaries'+ JSON.stringify(data));
-                });
-            };
-            var getNames = function(count){
-                /**
-                * retrieves random first names from API
-                * @param {number} count The value from supplemental select box
-                */
-                $http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&callback=JSON_CALLBACK').success(function(data){
-                    vm.names = data;
-                    console.log('more names'+ JSON.stringify(data));
-                });
-            };
-
-        }]);
-    </script>
   </body>
 </html>
