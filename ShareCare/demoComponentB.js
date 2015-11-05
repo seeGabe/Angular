@@ -2,12 +2,17 @@
 
 	angular.module('membertaker',['ShareService'])
 	
-	.controller('MTComponent', ['$scope','ShareFactory','DataFactory',
-			function($scope,ShareFactory,DataFactory){
+	.controller('MTComponent', ['$scope','ShareFactory',
+			function($scope,ShareFactory){
 	
-				$scope.datataker = ShareFactory.dummydata;
+				$scope.dataload = function(){ return ShareFactory.getDummyData() };
 	
-				console.log('CALL MADE -- current requests are for: '+ JSON.stringify($scope.datataker) +' data sets');
+				$scope.check = function(){
+					
+						$scope.datataker = ShareFactory.getDummyData();
+				}
+
+				// console.log('CALL MADE -- current requests are for: '+ JSON.stringify($scope.datataker()) +' data sets');
 
 			}])
 
@@ -16,6 +21,8 @@
 			restrict: 'E',
 			template: '	<div class="row">\
 							<h1>Just Listening</h1>\
+							{{dataload()}}\
+							<button ng-click="check();">yaa</button>\
 							{{datataker}}\
 						</div>\
 						<hr />',

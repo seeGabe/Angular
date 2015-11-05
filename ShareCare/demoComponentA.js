@@ -4,14 +4,15 @@
 	
 	.controller('MMComponent', ['$scope','ShareFactory','DataFactory',
 			function($scope,ShareFactory,DataFactory){
-	
-				$scope.inputfilter = ShareFactory.inputfilter;
-				$scope.dummydata = ShareFactory.dummydata;
-	
-				console.log('CALL MADE -- current requests are for: '+ JSON.stringify($scope.inputfilter) +' data sets');
+				var inputfilter = ShareFactory.getInputCounts();
+				// $scope.inputfilter = ShareFactory.inputfilter;
+				// $scope.dummydata = ShareFactory.dummydata;
+				var dump = function(){ return ShareFactory.getDummyData() };
+				$scope.dummydata = dump();
+				// console.log('CALL MADE -- current requests are for: '+ JSON.stringify($scope.inputfilter) +' data sets');
 
-				DataFactory.getMembers(ShareFactory.inputfilter.primary);
-				DataFactory.getNames(ShareFactory.inputfilter.supplemental);
+				// DataFactory.getMembers(inputfilter.primary);
+				// DataFactory.getNames(inputfilter.supplemental);
 	
 			}])
 
