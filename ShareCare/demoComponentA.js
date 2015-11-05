@@ -49,7 +49,7 @@
 		}])
 
 	
-	$('membermaker') //tag <app4>
+	$('membermaker') //element tag <componentX>
 		.each(function(index, elem){
 			//wraps the element up
 			var wrapper = angular.element(elem).wrap('<div ng-controller="MMComponent"></div>').parent()
