@@ -2,10 +2,15 @@
 
 	angular.module('membertaker',['ShareService'])
 	
-	.controller('MTComponent', ['$scope','ShareFactory',
-			function($scope,ShareFactory){
+	.controller('MTComponent', ['$scope','ShareFactory','$timeout',
+			function($scope,ShareFactory,$timeout){
+
+				$timeout(function(){
+
+					$scope.dataload = function(){ return ShareFactory.getDummyData() };
+
+				},400)
 	
-				$scope.dataload = function(){ return ShareFactory.getDummyData() };
 	
 				$scope.check = function(){
 					
@@ -20,7 +25,7 @@
 		return {
 			restrict: 'E',
 			template: '	<div class="row">\
-							<h1>Just Listening</h1>\
+							<h2>Just Listening</h2>\
 							{{dataload()}}\
 							<button ng-click="check();">yaa</button>\
 							{{datataker}}\

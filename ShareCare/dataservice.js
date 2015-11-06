@@ -9,7 +9,6 @@
 					supplemental:6
 				},
 				dummydata:{
-					members:{},
 					names:{}
 				}
 			};
@@ -50,16 +49,6 @@
 			var inputfilter = ShareFactory.getInputCounts();
 			var prime = inputfilter.primary;
 			var supple = inputfilter.supplemental;
-
-			var getMembers = function(count){
-				$http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&lname={lastName}&address={addressObject}&callback=JSON_CALLBACK')
-				.success(function(data){
-					ShareFactory.setDummyDataMembers(data);
-					// console.log('Primaries'+ JSON.stringify(data));
-				});
-			};
-
-			getMembers(prime);
 
 			var getNames = function(count){
 				$http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&callback=JSON_CALLBACK')
