@@ -4,6 +4,7 @@
 	
 	.controller('MMComponent', ['$scope','ShareFactory','DataFactory',
 			function($scope,ShareFactory,DataFactory){
+<<<<<<< HEAD
 				var inputfilter = ShareFactory.getInputCounts();
 				// $scope.inputfilter = ShareFactory.inputfilter;
 				// $scope.dummydata = ShareFactory.dummydata;
@@ -14,6 +15,10 @@
 				// DataFactory.getMembers(inputfilter.primary);
 				// DataFactory.getNames(inputfilter.supplemental);
 	
+=======
+				var dump = function(){ return ShareFactory.getDummyData() };
+				$scope.dummydata = dump();
+>>>>>>> refs/remotes/origin/ShareCareSplit
 			}])
 
 	.directive('membermaker',[function(){
