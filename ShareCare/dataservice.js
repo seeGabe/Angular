@@ -5,8 +5,7 @@
 
 			var dataObj = {
 				inputfilter:{
-					primary:3,
-					supplemental:6
+					numberOfNames:6
 				},
 				dummydata:{
 					names:{}
@@ -21,7 +20,7 @@
 			}
 
 			$window.sharingServices = {
-				getInputCounts:  function(){
+				getInputCount:  function(){
 					// console.log(JSON.stringify(dataObj.inputfilter));
 					return dataObj.inputfilter;
 				},
@@ -33,33 +32,33 @@
 					// console.log(JSON.stringify(dataObj));
 					return dataObj;
 				},
-				setDummyDataMembers: function(data){
-					dataObj.dummydata.members = data;
-
-				},
 				setDummyDataNames: function(data){
 					dataObj.dummydata.names = data;
 				}
-	        }
+      }
 
-	        return $window.sharingServices;   
+      return $window.sharingServices;   
 		}])
-		.factory('DataFactory',['$http','$q','ShareFactory', function($http,$q,ShareFactory){
+		.factory('DataFactory',['$http','ShareFactory', function($http,ShareFactory){
 
-			var inputfilter = ShareFactory.getInputCounts();
-			var prime = inputfilter.primary;
-			var supple = inputfilter.supplemental;
+			var inputfilter = ShareFactory.getInputCount();
+			var countOfNames = inputfilter.numberOfNames;
 
 			var getNames = function(count){
 				$http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&callback=JSON_CALLBACK')
 				.success(function(data){
 					ShareFactory.setDummyDataNames(data);
-					// console.log('Supplementals'+ JSON.stringify(data));
+					console.log('SUCCESS:: DataFactory.getNames service'+ JSON.stringify(data));
+				}).error(function(err){
+					console.log('FAIL:: DataFactory.getNames service'+ err);
 				});
 			};
 
-			getNames(supple);
+			getNames(countOfNames);
 
+			return{
+				getNames:getNames
+			};
 		}])
 
 })(window.angular);
