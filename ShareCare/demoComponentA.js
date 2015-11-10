@@ -4,21 +4,9 @@
 	
 	.controller('MMComponent', ['$scope','ShareFactory','DataFactory',
 			function($scope,ShareFactory,DataFactory){
-<<<<<<< HEAD
 				var inputfilter = ShareFactory.getInputCounts();
-				// $scope.inputfilter = ShareFactory.inputfilter;
-				// $scope.dummydata = ShareFactory.dummydata;
 				var dump = function(){ return ShareFactory.getDummyData() };
 				$scope.dummydata = dump();
-				// console.log('CALL MADE -- current requests are for: '+ JSON.stringify($scope.inputfilter) +' data sets');
-
-				// DataFactory.getMembers(inputfilter.primary);
-				// DataFactory.getNames(inputfilter.supplemental);
-	
-=======
-				var dump = function(){ return ShareFactory.getDummyData() };
-				$scope.dummydata = dump();
->>>>>>> refs/remotes/origin/ShareCareSplit
 			}])
 
 	.directive('membermaker',[function(){
