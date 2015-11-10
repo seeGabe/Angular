@@ -5,19 +5,19 @@
 	.controller('MTComponent', ['$scope','ShareFactory','$timeout',
 			function($scope,ShareFactory,$timeout){
 
+				/*
+				 * We can either wait for the service by predicting the return lag
+				 */
 				$timeout(function(){
-
 					$scope.dataload = function(){ return ShareFactory.getDummyData() };
-
 				},400)
-	
-	
-				$scope.check = function(){
-					
-						$scope.datataker = ShareFactory.getDummyData();
-				}
 
-				// console.log('CALL MADE -- current requests are for: '+ JSON.stringify($scope.datataker()) +' data sets');
+				/*
+				 * Or we can initiate the digest loop by way of NG-CLICK (or ..?)
+				 */
+				$scope.check = function(){
+							$scope.datataker = ShareFactory.getDummyData();
+				}
 
 			}])
 
@@ -25,23 +25,23 @@
 		return {
 			restrict: 'E',
 			template: '	<div class="row">\
-							<h2>Just Listening</h2>\
-							{{dataload()}}\
-							<button ng-click="check();">yaa</button>\
-							{{datataker}}\
-						</div>\
-						<hr />',
+										<h2>Just Listening</h2>\
+										{{dataload()}}\
+										<br />\
+										<button ng-click="check();">Grab Data</button>\
+										<br />\
+										{{datataker}}\
+									</div>',
 			scope: true
 		}
 		}])
 
 	
-	$('membertaker') //element tag <componentX>
+	$('membertaker') // finds element tag <componentX>
 		.each(function(index, elem){
-			//wraps the element up
+			// wraps the element with its controller
 			var wrapper = angular.element(elem).wrap('<div ng-controller="MTComponent"></div>').parent()
-
-			//them bootstrap the app with the wrapper as the root
+			// then bootstraps the app with the wrapper as the root
 			angular.bootstrap(wrapper, ['membertaker'])
 		})
 })(window.angular);
