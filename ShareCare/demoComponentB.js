@@ -19,7 +19,14 @@
 							$scope.datataker = ShareFactory.getDummyData();
 				}
 
-			}])
+				$scope.$watch(function(){
+					return ShareFactory.getDummyData();
+				}, function	(newValue){
+					console.log(newValue);
+					$scope.datawaiter = newValue;
+				})
+
+		}])
 
 	.directive('membertaker',[function(){
 		return {
@@ -31,6 +38,8 @@
 										<button ng-click="check();">Grab Data</button>\
 										<br />\
 										{{datataker}}\
+										<br />\
+										{{datawaiter}}\
 									</div>',
 			scope: true
 		}

@@ -34,7 +34,8 @@
 				},
 				setDummyDataNames: function(data){
 					dataObj.dummydata.names = data;
-				}
+				},
+				dataObj: dataObj
       }
 
       return $window.sharingServices;   
