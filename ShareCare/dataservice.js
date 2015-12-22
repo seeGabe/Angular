@@ -1,7 +1,7 @@
 (function(angular){
 
 	angular.module('ShareService',[])
-		.factory('ShareFactory',['$rootScope','$window',function($rootScope,$window){
+		.factory('ShareFactory',['$rootScope',function($rootScope){
 
 			var dataObj = {
 				inputfilter:{
@@ -12,14 +12,14 @@
 				}
 			};
 
-			$window.rootScopes = $window.rootScopes || [];
-			$window.rootScopes.push($rootScope);
+			// window.rootScopes = window.rootScopes || [];
+			// window.rootScopes.push($rootScope);
 
-			if(!!$window.sharingServices){
-				return $window.sharingServices;
+			if(!!window.sharingServices){
+				return window.sharingServices;
 			}
 
-			$window.sharingServices = {
+			window.sharingServices = {
 				getInputCount:  function(){
 					// console.log(JSON.stringify(dataObj.inputfilter));
 					return dataObj.inputfilter;
@@ -38,28 +38,25 @@
 				dataObj: dataObj
       }
 
-      return $window.sharingServices;   
+      return window.sharingServices;   
 		}])
-		.factory('DataFactory',['$http','ShareFactory', function($http,ShareFactory){
 
-			var inputfilter = ShareFactory.getInputCount();
-			var countOfNames = inputfilter.numberOfNames;
+		.service('DataService',['$http','$q', function($http,$q){
 
-			var getNames = function(count){
-				$http.jsonp('http://www.filltext.com/?rows='+count+'&id={index}&fname={firstName}&callback=JSON_CALLBACK')
+			var baseUrl = 'http://www.filltext.com/?rows=';
+			var endUrl = '&fname={firstName}&callback=JSON_CALLBACK';
+
+			this.getNames = function(count){
+        var defferred = $q.defer();
+				$http
+        .jsonp( baseUrl + count + endUrl )
 				.success(function(data){
-					ShareFactory.setDummyDataNames(data);
-					console.log('SUCCESS:: DataFactory.getNames service'+ JSON.stringify(data));
+					defferred.resolve(data);
 				}).error(function(err){
-					console.log('FAIL:: DataFactory.getNames service'+ err);
+					deferred.reject('I am Error');
 				});
+        return defferred.promise;
 			};
-
-			getNames(countOfNames);
-
-			return{
-				getNames:getNames
-			};
-		}])
+		}]);
 
 })(window.angular);

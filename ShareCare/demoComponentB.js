@@ -9,21 +9,24 @@
 				 * We can either wait for the service by predicting the return lag
 				 */
 				$timeout(function(){
-					$scope.dataload = function(){ return ShareFactory.getDummyData() };
+					$scope.dataload = function(){ return window.sharingServices.getDummyData() };
 				},400)
 
 				/*
-				 * Or we can initiate the digest loop by way of NG-CLICK (or ..?)
+				 * Or we can initiate the digest loop by way of NG-CLICK
 				 */
 				$scope.check = function(){
-							$scope.datataker = ShareFactory.getDummyData();
+							$scope.datataker = window.sharingServices.getDummyData();
+              console.log(window.sharingServices);
 				}
-
+        /*
+         * Lastly, we can initiate another digest loop using a $watch-er
+         */
 				$scope.$watch(function(){
-					return ShareFactory.getDummyData();
-				}, function	(newValue){
-					console.log(newValue);
-					$scope.datawaiter = newValue;
+					return window.sharingServices.getDummyData();
+				}, function	(newValue, oldValue){
+					console.log('ha');
+					$scope.datawatcher = newValue;
 				})
 
 		}])
@@ -33,13 +36,13 @@
 			restrict: 'E',
 			template: '	<div class="row">\
 										<h2>Just Listening</h2>\
-										{{dataload()}}\
+										<div class="col-md-12">dataload():{{dataload()}}</div>\
 										<br />\
-										<button ng-click="check();">Grab Data</button>\
+										<div class="col-md-12"><button ng-click="check();">Grab Data</button></div>\
 										<br />\
-										{{datataker}}\
+										<div class="col-md-12">datataker:{{datataker}}</div>\
 										<br />\
-										{{datawaiter}}\
+										<div class="col-md-12">datawatcher:{{datawatcher}}</div>\
 									</div>',
 			scope: true
 		}

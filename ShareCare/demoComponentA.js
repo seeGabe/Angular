@@ -10,8 +10,8 @@
 				 * this loads the model in "SHAREFACTORY"
 				 * allowing us to then consume it globally
 				 */
-				var inputfilter = ShareFactory.getInputCount();
-				var dump = function(){ return ShareFactory.getDummyData() };
+				var inputfilter = window.sharingServices.getInputCount();
+				var dump = function(){ return window.sharingServices.getDummyData() };
 				$scope.dummydata = dump();
 
 				$scope.load = function(){
